@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path=":memory:" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2474"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="revenue_by_product_category_table" custom_title="0" dock_id="1" table="4,33:mainrevenue_by_product_category_table"/><dock_state state="000000ff00000000fd0000000100000002000004fc00000359fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000004fc0000010d00ffffff0000030f0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="blinkit_customer_feedback" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="89"/><column index="2" value="75"/><column index="3" value="89"/><column index="4" value="47"/><column index="5" value="258"/><column index="6" value="134"/><column index="7" value="74"/><column index="8" value="105"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="blinkit_customers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="89"/><column index="2" value="141"/><column index="3" value="199"/><column index="4" value="86"/><column index="5" value="300"/><column index="6" value="155"/><column index="7" value="60"/><column index="8" value="121"/><column index="9" value="134"/><column index="10" value="88"/><column index="11" value="116"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="blinkit_orders_cleaned" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="75"/><column index="2" value="89"/><column index="3" value="115"/><column index="4" value="164"/><column index="5" value="143"/><column index="6" value="112"/><column index="7" value="81"/><column index="8" value="123"/><column index="9" value="135"/><column index="10" value="62"/><column index="11" value="114"/><column index="12" value="86"/><column index="13" value="92"/><column index="14" value="74"/><column index="15" value="107"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="monthly_sales_trends" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="37"/><column index="2" value="50"/><column index="3" value="98"/><column index="4" value="87"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="monthly_sales_trends_table" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="37"/><column index="2" value="50"/><column index="3" value="98"/><column index="4" value="87"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="revenue_by_product_category" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="119"/><column index="2" value="103"/><column index="3" value="98"/><column index="4" value="114"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="revenue_by_product_category_table" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="119"/><column index="2" value="103"/><column index="3" value="98"/><column index="4" value="114"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- FINAL: build the four physical tables for Tableau
+
+DROP TABLE IF EXISTS revenue_by_product_category_table;
+CREATE TABLE revenue_by_product_category_table AS
+SELECT
+  p.category,
+  p.product_name,
+  SUM(oi.quantity * p.price)      AS total_revenue,
+  SUM(oi.quantity)                 AS total_units_sold
+FROM blinkit_products_cleaned AS p
+JOIN blinkit_order_items_cleaned AS oi
+  ON p.product_id = oi.product_id
+GROUP BY p.category, p.product_name
+ORDER BY total_revenue DESC;
+
+DROP TABLE IF EXISTS customer_order_behavior_table;
+CREATE TABLE customer_order_behavior_table AS
+SELECT
+  c.customer_id,
+  c.customer_segment,
+  COUNT(o.order_id)      AS total_orders,
+  AVG(o.order_total)     AS avg_order_value,
+  SUM(o.order_total)     AS lifetime_value
+FROM blinkit_customers AS c
+JOIN blinkit_orders_cleaned AS o
+  ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_segment
+ORDER BY lifetime_value DESC;
+
+DROP TABLE IF EXISTS feedback_vs_spend_table;
+CREATE TABLE feedback_vs_spend_table AS
+SELECT
+  c.customer_id,
+  c.customer_segment,
+  AVG(f.rating)          AS avg_rating,
+  COUNT(f.feedback_id)   AS feedback_count,
+  AVG(o.order_total)     AS avg_order_value
+FROM blinkit_customers AS c
+JOIN blinkit_orders_cleaned AS o
+  ON c.customer_id = o.customer_id
+JOIN blinkit_customer_feedback AS f
+  ON c.customer_id = f.customer_id
+WHERE f.rating IS NOT NULL
+GROUP BY c.customer_id, c.customer_segment
+HAVING COUNT(f.feedback_id) &gt; 0
+ORDER BY avg_rating DESC;
+
+DROP TABLE IF EXISTS monthly_sales_trends_table;
+CREATE TABLE monthly_sales_trends_table AS
+SELECT
+  o.order_years   AS year,
+  o.order_month   AS month,
+  SUM(o.order_total) AS total_revenue,
+  COUNT(o.order_id)  AS order_count
+FROM blinkit_orders_cleaned AS o
+WHERE NOT (o.order_years = 2024 AND o.order_month = 11)
+GROUP BY o.order_years, o.order_month
+ORDER BY o.order_years, o.order_month;
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
