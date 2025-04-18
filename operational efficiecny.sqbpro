@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path=":memory:" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2025"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="operational_efficiency_table" custom_title="0" dock_id="1" table="4,28:mainoperational_efficiency_table"/><dock_state state="000000ff00000000fd0000000100000002000004fc00000359fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000004fc0000010a00ffffff000003170000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="blinkit_delivery_performance" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="75"/><column index="2" value="135"/><column index="3" value="115"/><column index="4" value="115"/><column index="5" value="156"/><column index="6" value="92"/><column index="7" value="112"/><column index="8" value="135"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="blinkit_orders_cleaned" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="75"/><column index="2" value="89"/><column index="3" value="115"/><column index="4" value="164"/><column index="5" value="143"/><column index="6" value="112"/><column index="7" value="81"/><column index="8" value="123"/><column index="9" value="135"/><column index="10" value="62"/><column index="11" value="114"/><column index="12" value="86"/><column index="13" value="92"/><column index="14" value="74"/><column index="15" value="107"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="operational_efficiency_table" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="37"/><column index="2" value="50"/><column index="3" value="87"/><column index="4" value="98"/><column index="5" value="150"/><column index="6" value="122"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- ============================================================================
+-- ADJUSTED CLEAN &amp; OPERATIONAL EFFICIENCY SCRIPT
+-- Uses the existing delivery_time_minutes and distance_km columns
+-- ============================================================================
+
+-- 1. Clean delivery performance using the precomputed delivery_time_minutes
+DROP TABLE IF EXISTS blinkit_delivery_performance_cleaned;
+CREATE TABLE blinkit_delivery_performance_cleaned AS
+SELECT
+  order_id,                 -- to link back to orders
+  delivery_partner_id,      -- rider/partner ID
+  delivery_status,          -- e.g. “On Time”, “Delayed”
+  delivery_time_minutes,    -- minutes early (negative) or late (positive)
+  distance_km,              -- distance traveled in kilometers
+  reasons_if_delayed        -- textual reason for delay, if any
+FROM blinkit_delivery_performance
+WHERE delivery_time_minutes IS NOT NULL;
+
+
+-- 2. Build the operational efficiency summary
+DROP TABLE IF EXISTS operational_efficiency_table;
+CREATE TABLE operational_efficiency_table AS
+SELECT
+  o.order_years              AS year,                -- order year
+  o.order_month              AS month,               -- order month
+  COUNT(o.order_id)          AS order_count,         -- number of orders
+  ROUND(SUM(o.order_total),2)      AS total_revenue,     -- total $ revenue
+  ROUND(AVG(dp.delivery_time_minutes),2) AS avg_delivery_minutes, -- avg delivery time in minutes
+  ROUND(AVG(dp.distance_km),2)      AS avg_distance_km    -- avg distance per delivery
+FROM blinkit_orders_cleaned AS o
+JOIN blinkit_delivery_performance_cleaned AS dp
+  ON o.order_id = dp.order_id
+GROUP BY
+  o.order_years,
+  o.order_month
+ORDER BY
+  o.order_years,
+  o.order_month;           -- chronological order
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
