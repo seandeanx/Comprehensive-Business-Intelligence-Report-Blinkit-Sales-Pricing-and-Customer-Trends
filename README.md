@@ -1,101 +1,103 @@
-# Comprehensive-Business-Intelligence-Report-Blinkit-Sales-Pricing-and-Customer-Trends
-Analyzed Blinkit’s data by cleaning and joining multiple datasets in SQL, then visualized insights in Tableau. Covered product sales, customer behavior, pricing impact, and delivery performance to help improve decisions using clear, interactive dashboards.
 
-Blinkit Sales & Customer Insights Analysis
-📌 Overview
-This project analyzes Blinkit’s sales, customer behavior, pricing, and delivery operations data to generate actionable insights and help improve decision-making. The analysis uses cleaned datasets from Blinkit's order system, products, customer feedback, and delivery performance. The final output includes multiple Tableau dashboards and an interactive story designed to support business strategy.
+# Blinkit Sales Analysis Project
 
-📊 Tableau Story
-🔗 View Full Tableau Story: Blinkit Sales & Customer Insights Dashboard
+## 📊 Overview
 
-The story contains 4 main dashboards:
+This project analyzes Blinkit's sales data across multiple areas including product performance, customer behavior, pricing strategies, and operational efficiency. The goal is to uncover actionable insights that help enhance sales, optimize pricing, and improve customer satisfaction and delivery operations.
 
-Sales Dashboard
+## 📌 Tableau Dashboard
 
-Customer Insights Dashboard
+Explore the full interactive Tableau dashboard here:  
+🔗 [Blinkit Sales Customer Insights Dashboard](https://public.tableau.com/views/BlinkitSalesCustomerInsightsDashboard/Story1)
 
-Pricing & Profitability Dashboard
+---
 
-Operational Efficiency Dashboard
+## 🔍 Business Objectives
 
-Each dashboard addresses specific business questions.
+As a data analyst, the goal was to:
+- Analyze Blinkit's historical sales and operations data.
+- Identify key sales trends and customer behaviors.
+- Understand how pricing and delivery performance affect revenue.
+- Present findings through professional Tableau dashboards.
 
-🔍 Business Questions & Key Insights
-1. Sales Performance & Product Trends
-Q1: Which product categories and brands are driving the highest sales and revenue?
+---
 
-Top-performing categories and products were identified using order-item data joined with product prices.
+## 📂 Key Dashboards & Questions Answered
 
-Highest revenue came from [your top categories/brands – e.g., "Beverages", "Snacks"].
+### 1. **Sales Dashboard** (Q1 & Q2)
 
-Q2: How do sales and revenue trends vary over time (monthly)?
+**Questions Answered:**
+- Which product categories and brands generate the most revenue?
+- How do sales and order trends vary over time?
 
-Peak months: July 2023, May 2024.
+**Key Insights:**
+- Top-performing categories and brands identified for targeted promotions.
+- Seasonal sales spikes help in inventory planning and marketing timing.
 
-Seasonal dips were noted in November 2024 due to partial data.
+**Data Sources:**
+- `revenue_by_product_category_table`
+- `monthly_sales_trends_table`
 
-Time-series line charts help visualize monthly patterns clearly.
+---
 
-2. Customer Behavior & Segmentation
-Q3: What are the key characteristics of our customers in terms of order frequency and average order value?
+### 2. **Customer Insights Dashboard** (Q3 & Q4)
 
-Premium customers had the highest average order value and frequency.
+**Questions Answered:**
+- What are the order frequency and average order value per customer segment?
+- How does customer feedback relate to purchasing behavior?
 
-Regular users made more frequent, medium-value purchases.
+**Key Insights:**
+- Premium customers order more frequently and spend more.
+- Higher-rated customers tend to spend more on average.
 
-Inactive users had the least engagement.
+**Data Sources:**
+- `customer_order_behavior_table`
+- `feedback_vs_spend_table`
 
-Q4: How does customer feedback and satisfaction relate to purchasing patterns?
+---
 
-Customers with higher feedback ratings also had higher average order values.
+### 3. **Pricing & Profitability Dashboard** (Q5 & Q6)
 
-Feedback score trends can help improve loyalty by identifying satisfaction patterns.
+**Questions Answered:**
+- How do selling price, MRP, and margin percentage vary?
+- How do pricing strategies impact sales volume?
 
-3. Pricing Strategy & Profitability
-Q5: How do the selling price, MRP, and margin percentages compare across products?
+**Key Insights:**
+- Products with high price-to-MRP gaps need pricing revision.
+- Categories with low margins and high volume offer pricing opportunities.
 
-Products with higher margins didn’t always have higher sales volume.
+**Data Source:**
+- `pricing_analysis_table`
 
-Opportunities exist in mid-priced items with consistent performance and decent margins.
+---
 
-Q6: What is the relationship between pricing strategies (including discounts) and sales volume?
+### 4. **Operational Efficiency Dashboard** (Q7)
 
-High-discount products showed better movement in some categories.
+**Questions Answered:**
+- How do delivery time and distance impact revenue?
+- Are there bottlenecks affecting customer satisfaction?
 
-Scatter plots in the dashboard display price vs. margin vs. units sold to understand trade-offs.
+**Key Insights:**
+- Consistent delivery performance correlates with better sales.
+- Delays affect customer retention in key regions.
 
-4. Operational Efficiency
-Q7: How does our delivery performance impact sales?
+**Data Source:**
+- `operational_efficiency_table`
 
-Longer delivery times were generally associated with lower revenue and fewer orders.
+---
 
-Shorter average delivery times correlated with higher monthly performance.
+## ✅ Final Takeaways
 
-📁 Data Sources
-blinkit_orders_cleaned.csv
+- Top brands/categories and high-margin products drive growth.
+- Loyal and satisfied customers spend more—feedback matters.
+- Pricing strategies should balance margins and demand.
+- Operational efficiency directly influences revenue and experience.
 
-blinkit_products_cleaned.csv
+---
 
-blinkit_order_items_cleaned.csv
+## 🛠 Tools & Skills Used
 
-blinkit_customers.csv
-
-blinkit_customer_feedback.csv
-
-blinkit_delivery_performance_cleaned.csv
-
-✅ Final Deliverables
-4 Tableau Dashboards:
-
-Sales Overview
-
-Customer Insights
-
-Pricing & Profitability
-
-Operational Efficiency
-
-1 Interactive Tableau Story:
-
-Combines all dashboards with captions and explanations
-
+- **SQL**: Data cleaning and table creation
+- **Tableau**: Visualization and dashboard building
+- **Data Wrangling**: Merging, filtering, and aggregating datasets
+- **Business Insights**: Translating raw data into strategic recommendations
