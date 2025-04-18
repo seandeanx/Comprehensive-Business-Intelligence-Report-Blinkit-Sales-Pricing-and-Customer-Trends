@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1254"/><column_width id="4" width="0"/></tab_structure><tab_browse><table title="blinkit_products" custom_title="0" dock_id="1" table="0,0:"/><dock_state state="000000ff00000000fd0000000100000002000004fc00000324fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000004fc0000010100ffffff000004fc0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- 1. Preview one row from the products dataset
+-- This shows an example of what a product record looks like.
+SELECT *
+FROM blinkit_products
+LIMIT 1;
+
+-- 2. Check the schema of the products table
+-- This command lists all the columns, their data types, and other details.
+PRAGMA table_info(blinkit_products);
+
+-- 3. Retrieve all unique product records where both price and product_id are available.
+-- This ensures we are working only with rows that have valid product identifiers and pricing.
+SELECT DISTINCT *
+FROM blinkit_products
+WHERE price IS NOT NULL
+  AND product_id IS NOT NULL;
+
+-- 4. Aggregate overall product metrics
+-- Here we compute:
+--   - The minimum, maximum, and average price among products.
+--   - The minimum, maximum, and average discount percentage.
+-- The discount percentage is calculated as:
+--     (mrp - price) / mrp * 100,
+-- but only when mrp &gt; 0 (otherwise, we use NULL) to avoid division by zero.
+SELECT 
+    MIN(price) AS min_price,
+    MAX(price) AS max_price,
+    AVG(price) AS avg_price,
+    MIN(CASE WHEN mrp &gt; 0 THEN ROUND(((mrp - price) * 100.0 / mrp), 2) ELSE NULL END) AS min_discount,
+    MAX(CASE WHEN mrp &gt; 0 THEN ROUND(((mrp - price) * 100.0 / mrp), 2) ELSE NULL END) AS max_discount, 
+    AVG(CASE WHEN mrp &gt; 0 THEN ((mrp - price) * 100.0 / mrp) ELSE NULL END) AS avg_discount
+FROM blinkit_products;
+
+-- 5. Aggregate product metrics by category
+-- This groups the data by category, then calculates:
+--   - How many products are in each category.
+--   - The average price for products in each category.
+--   - The average discount percentage for each category.
+SELECT 
+    category,
+    COUNT(*) AS product_count,
+    AVG(price) AS avg_price,
+    AVG(CASE WHEN mrp &gt; 0 THEN ((mrp - price) * 100.0 / mrp) ELSE NULL END) AS avg_discount
+FROM blinkit_products
+WHERE price IS NOT NULL 
+  AND product_id IS NOT NULL
+GROUP BY category;
+
+-- ********** Orders Data Analysis **********
+-- 6. Preview the orders_cleaned dataset.
+-- This displays the first 10 rows from the orders data.
+SELECT *
+FROM blinkit_orders_cleaned
+LIMIT 10;
+
+-- 7. Check the schema of the orders_cleaned table
+-- This helps us understand what columns are present in our orders data.
+PRAGMA table_info(blinkit_orders_cleaned);
+
+-- 8. Aggregate orders by store
+-- This query calculates:
+--   - The number of orders per store.
+--   - The total revenue per store (sum of all order totals).
+--   - The average order total for each store.
+-- The results are ordered by total revenue in descending order.
+SELECT 
+    store_id,
+    COUNT(order_id) AS order_count,
+    SUM(order_total) AS total_revenue,
+    AVG(order_total) AS avg_order_total
+FROM blinkit_orders_cleaned
+GROUP BY store_id
+ORDER BY total_revenue DESC;
+
+-- 9. Aggregate orders by payment method
+-- This query calculates the number of orders, total revenue, and average order total per payment method.
+SELECT 
+    payment_method,
+    COUNT(order_id) AS order_count,
+    SUM(order_total) AS total_revenue,
+    AVG(order_total) AS avg_order_total
+FROM blinkit_orders_cleaned
+GROUP BY payment_method;
+
+-- 10. Reminder for the Viewer:
+-- Please download the cleaned datasets &quot;blinkit_orders_cleaned&quot; and &quot;blinkit_products&quot;
+-- (or ideally &quot;blinkit_products_cleaned&quot; if you later create a cleaned version of the products data)
+-- so that you can use these results for further analysis or visualization in a tool like Tableau.
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

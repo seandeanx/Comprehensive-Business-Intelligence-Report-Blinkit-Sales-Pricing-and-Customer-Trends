@@ -1,0 +1,52 @@
+category,product_name,avg_price,avg_margin_pct,total_units_sold,total_revenue
+Pharmacy,Vitamins,682.54,20.0,380,260822.01
+Pet Care,Pet Treats,536.06,35.0,473,252007.37
+Pharmacy,Cough Syrup,541.12,20.0,373,203569.98
+Household Care,Toilet Cleaner,454.6,25.0,430,199837.48
+Dairy & Breakfast,Bread,686.5,20.0,270,184851.1
+Household Care,Dish Soap,462.46,25.0,397,184441.21
+Pet Care,Cat Food,537.41,35.0,307,166596.39
+Baby Care,Baby Wipes,470.15,30.0,328,158768.41
+Fruits & Vegetables,Onions,589.45,25.0,222,138858.42
+Baby Care,Baby Food,582.97,30.0,236,137442.79
+Dairy & Breakfast,Eggs,556.04,20.0,246,137396.83
+Personal Care,Lotion,385.86,35.0,350,136400.42
+Cold Drinks & Juices,Cola,576.94,30.0,230,132367.36
+Snacks & Munchies,Biscuits,521.2,35.0,247,128354.32
+Pharmacy,Pain Reliever,570.51,20.0,220,127976.58
+Pet Care,Dog Food,530.6,35.0,223,121284.99
+Fruits & Vegetables,Carrots,629.28,25.0,191,120499.25
+Instant & Frozen Food,Frozen Biryani,435.55,40.0,254,111562.12
+Personal Care,Soap,586.61,35.0,186,110906.63
+Dairy & Breakfast,Butter,717.48,20.0,148,106843.34
+Cold Drinks & Juices,Orange Juice,469.21,30.0,222,106443.82
+Grocery & Staples,Sugar,551.12,15.0,184,103884.76
+Personal Care,Toothpaste,506.53,35.0,194,97911.67
+Grocery & Staples,Pulses,346.14,15.0,273,94641.06
+Fruits & Vegetables,Mangoes,934.31,25.0,101,94339.05
+Fruits & Vegetables,Potatoes,394.23,25.0,230,92859.84
+Grocery & Staples,Wheat Flour,437.29,15.0,213,92791.66
+Dairy & Breakfast,Cheese,444.09,20.0,182,78519.56
+Dairy & Breakfast,Curd,578.9,20.0,126,74055.08
+Cold Drinks & Juices,Iced Tea,610.95,30.0,118,71171.24
+Cold Drinks & Juices,Mango Drink,480.94,30.0,143,67757.4
+Snacks & Munchies,Nuts,506.82,35.0,134,67024.13
+Household Care,Detergent,249.14,25.0,251,59965.56
+Instant & Frozen Food,Frozen Vegetables,445.26,40.0,137,59165.57
+Instant & Frozen Food,Ice Cream,533.27,40.0,98,55899.99
+Snacks & Munchies,Chips,307.58,35.0,171,53026.29
+Baby Care,Diapers,568.5,30.0,91,52015.98
+Snacks & Munchies,Popcorn,280.46,35.0,183,50003.86
+Personal Care,Shampoo,315.48,35.0,157,49675.89
+Snacks & Munchies,Chocolates,389.03,35.0,131,49619.92
+Instant & Frozen Food,Frozen Pizza,272.2,40.0,180,47783.33
+Snacks & Munchies,Cookies,521.24,35.0,97,46620.19
+Grocery & Staples,Salt,404.9,15.0,116,46096.26
+Fruits & Vegetables,Tomatoes,451.78,25.0,97,44812.72
+Fruits & Vegetables,Bananas,504.29,25.0,85,42450.2
+Dairy & Breakfast,Milk,598.83,20.0,56,33534.48
+Instant & Frozen Food,Instant Noodles,458.76,40.0,73,32801.64
+Fruits & Vegetables,Spinach,630.84,25.0,40,25233.6
+Dairy & Breakfast,Cereal,282.59,20.0,86,24021.8
+Grocery & Staples,Rice,210.46,15.0,109,22524.08
+Cold Drinks & Juices,Lemonade,332.84,30.0,45,14977.8
